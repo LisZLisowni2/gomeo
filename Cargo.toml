@@ -1,0 +1,21 @@
+[package]
+name = "gomeo"
+version = "0.1.0"
+edition = "2024"
+licence = "GPL-3.0"
+license-file = "LICENSE"
+repository = "https://github.com/LisZLisowni2/gomeo.git"
+authors = ["LisZLisowni2"]
+description = "An experimental programming language written in Rust with LLVM IR as backend"
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+panic = "abort"
+
+[dependencies]
