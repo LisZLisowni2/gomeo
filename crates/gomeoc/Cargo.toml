@@ -1,0 +1,3 @@
+[package]
+name = "gomeoc"
+edition = "2024"

@@ -1,5 +1,8 @@
-[package]
-name = "gomeo"
+[workspace]
+resolver = "3"
+members = ["crates/gomeoc", "crates/gomeo"]
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 license = "GPL-3.0"
@@ -17,4 +20,3 @@ debug = false
 lto = true
 panic = "abort"
 
-[dependencies]
