@@ -1,8 +1,8 @@
-pub mod ast;
-pub mod codegen;
-pub mod compiler;
-pub mod lexer;
-pub mod parser;
-pub mod semantic;
+mod ast;
+mod codegen;
+mod compiler;
+mod lexer;
+mod parser;
+mod semantic;
 
 pub use compiler::compile;

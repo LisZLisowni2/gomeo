@@ -13,5 +13,7 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    compile(&args.input);
+    if let Err(e) = compile(&args.input) {
+        eprintln!("[ERROR] Compile failed: {}", e);
+    }
 }
