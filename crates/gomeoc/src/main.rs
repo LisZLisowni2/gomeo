@@ -1,10 +1,18 @@
+use clap::Parser;
+use gomeo::compile;
+use std::path::PathBuf;
+
+#[derive(Parser, Debug)]
+#[command(name = "gomeoc")]
+#[command(version, about = "The Gomeo compiler")]
+struct Args {
+    /// Gomeo source file
+    input: PathBuf,
+}
+
 fn main() {
-    // Replace with clap
-    let args = std::env::args();
+    let args = Args::parse();
 
-    if args.len() != 2 {
-        eprintln!("Usage: gomeoc <file>");
-    }
-
-    // Run gomeo
+    println!("Compiling: {}", args.input.display());
+    compile();
 }

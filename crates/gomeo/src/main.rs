@@ -1,9 +1,4 @@
-use inkwell::{context::Context, module::Linkage, values::BasicMetadataValueEnum, AddressSpace};
-
-mod ast;
-mod codegen;
-mod lexer;
-mod parser;
+use inkwell::{AddressSpace, context::Context, module::Linkage, values::BasicMetadataValueEnum};
 
 fn main() {
     let context = Context::create();
