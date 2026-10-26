@@ -1,0 +1,25 @@
+class Dog {
+    public name: string;
+
+    public def new(name: string) {
+        this->name = name;
+    }
+}
+
+fun printDog(dog: &Dog) {
+    println(dog->name);
+}
+
+fun takeDog(take dog: Dog) {
+    println(dog->name);
+}
+
+fun main() {
+    let dog: Dog = new Dog("Rex");
+    
+    printDog(dog);
+
+    takeDog(dog);
+
+    // dog is not already owner of object
+}

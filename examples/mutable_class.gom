@@ -1,0 +1,14 @@
+class Counter {
+    public mut value: i32;
+
+    public def new() {
+        this->value = 0;
+    }
+}
+
+fun main() {
+    mut counter: Counter = new Counter();
+
+    counter->value = 10;
+    counter->value = 20;
+}

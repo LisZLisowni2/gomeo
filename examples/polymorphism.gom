@@ -1,0 +1,27 @@
+class Animal {
+    public virtual fun makeNoice(); 
+}
+
+class Dog <- Animal {
+    public fun makeNoice() {
+        println("Hau!");
+    }
+}
+
+class Cat <- Animal {
+    public fun makeNoice() {
+        println("Meow!");
+    }
+}
+
+fun animalMakeNoice(animal: virtual Animal) {
+    animal->makeNoice();
+}
+
+fun main() {
+    let dog: Dog;
+    let cat: Cat;
+
+    animalMakeNoice(dog);
+    animalMakeNoice(cat);
+}

@@ -2,8 +2,7 @@
 name = "gomeo"
 version = "0.1.0"
 edition = "2024"
-licence = "GPL-3.0"
-license-file = "LICENSE"
+license = "GPL-3.0"
 repository = "https://github.com/LisZLisowni2/gomeo.git"
 authors = ["LisZLisowni2"]
 description = "An experimental programming language written in Rust with LLVM IR as backend"

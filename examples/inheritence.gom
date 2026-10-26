@@ -1,0 +1,35 @@
+class Dog {
+    public name: string;
+    protected owner: string;
+    private message: string;
+
+    public def new(n: string, o: string, m: string) {
+        this->name = n;
+        this->owner = o;
+        this->message = m;
+    }
+
+    exclude public fun Bark() {
+        println("Hau!");
+    }
+}
+
+class Cat <- Dog {
+    public def new(n: string, o: string, m: string) {
+        this->name = n;
+        this->owner = o;
+        this->message = m;
+    }
+
+    exclude public fun Meow() {
+        println("Meow!");
+    }
+}
+
+fun main() {
+    let shepard: Dog = Dog("Shepard", "Albert", "This is a nice dog");
+    let phoenix: Cat = Cat("Phoenix", "John", "This is a nice cat");
+
+    shepard->Bark();
+    phoenix->Meow();
+}

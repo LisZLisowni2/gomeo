@@ -1,0 +1,28 @@
+import std.exception;
+
+class DivisionByZero <- exception.Exception {
+    public fun message() -> string {
+        return "You cannot division by zero";
+    }
+} 
+
+fun division(a: i32, b: i32) -> i32 {
+    if (b == 0) {
+        raise ;
+    }
+
+    return a / b;
+}
+
+fun main() {
+    try {
+        let a: i32 = 4;
+        let b: i32 = 0;
+        let div = division(a, b);
+        println(@"{a} / {b} = {div}");
+    } catch (e: DivisionByZero) {
+        println(e->message());
+    } finally {
+        println("Check ended");
+    }
+}

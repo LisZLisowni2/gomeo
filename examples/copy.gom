@@ -1,0 +1,23 @@
+class Toy {
+    public name: string;
+
+    public def new(name: string) {
+        this->name = name;
+    }
+
+    public def copy() -> Toy {
+        // Copy mechanism
+    }
+}
+
+class Dog {
+    deep public toy: Toy;
+
+    public def new(toy: Toy) {
+        this->toy = Toy;
+    }
+
+    public def copy() -> Dog {
+        // Copy with deep included
+    }
+}

@@ -1,0 +1,21 @@
+class Dog {
+    public mut name: string;
+    protected mut owner: string;
+    private message: string;
+
+    public def new(n: string, o: string, m: string) {
+        this->name = n;
+        this->owner = o;
+        this->message = m;
+    }
+
+    public fun Bark() {
+        println("Hau!");
+    }
+}
+
+fun main() {
+    let shepard: Dog = new Dog("Shepard", "Albert", "This is a nice dog");
+
+    shepard->Bark();
+}
