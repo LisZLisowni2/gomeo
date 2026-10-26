@@ -13,6 +13,5 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    println!("Compiling: {}", args.input.display());
-    compile();
+    compile(&args.input);
 }
