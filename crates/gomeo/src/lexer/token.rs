@@ -18,9 +18,10 @@ pub enum TokenKind {
     Colon,
     Semicolon,
     Equal,
+    Comma,
 
     // End of file
-    EOF,
+    Eof,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

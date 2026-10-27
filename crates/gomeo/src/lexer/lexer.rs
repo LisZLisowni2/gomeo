@@ -34,7 +34,7 @@ impl Lexer {
         }
 
         tokens.push(Token {
-            kind: TokenKind::EOF,
+            kind: TokenKind::Eof,
             lexeme: String::new(),
             line: self.line,
             column: self.column,
@@ -60,6 +60,7 @@ impl Lexer {
             ':' => TokenKind::Colon,
             ';' => TokenKind::Semicolon,
             '=' => TokenKind::Equal,
+            ',' => TokenKind::Comma,
 
             '"' => return self.string(),
 

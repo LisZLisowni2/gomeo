@@ -11,9 +11,8 @@ pub fn compile(source_file: &Path) -> Result<(), String> {
     let mut lexer = super::lexer::Lexer::new(content.as_str());
     let tokens = lexer.tokenize()?;
 
-    for token in tokens {
-        println!("{:?}", token);
-    }
+    let mut parser = super::parser::Parser::new(tokens);
+    let _program = parser.parse()?;
 
     println!("Source loaded: {} characters", content.len());
 
