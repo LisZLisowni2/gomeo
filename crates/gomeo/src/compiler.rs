@@ -8,6 +8,12 @@ pub fn compile(source_file: &Path) -> Result<(), String> {
     let content = std::fs::read_to_string(source_file).expect("[CRITICAL] Failed to open a file");
 
     // TODO: lexer -> parser -> ast -> codegen
+    let mut lexer = super::lexer::Lexer::new(content.as_str());
+    let tokens = lexer.tokenize()?;
+
+    for token in tokens {
+        println!("{:?}", token);
+    }
 
     println!("Source loaded: {} characters", content.len());
 

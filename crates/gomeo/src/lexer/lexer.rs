@@ -124,7 +124,7 @@ impl Lexer {
         Token {
             kind,
             lexeme: self.lexeme(),
-            column: self.column,
+            column: self.start_column,
             line: self.line,
         }
     }
