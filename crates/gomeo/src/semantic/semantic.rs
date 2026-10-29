@@ -52,30 +52,13 @@ impl SemanticAnalyzer {
     }
 
     fn analyze_statement(&self, statement: &Statement) -> Result<(), String> {
-        println!("{:?}", statement);
-
         match statement {
             Statement::Expression(expression) => self.analyze_expression(expression)?,
         }
-        // match statement {
-        //     Statement::Expression(expression) => match expression {
-        //         Expression::Call { callee, arguments } => {
-        //             if let Ok(function_symbol) = self.resolver.resolve(callee) {
-        //                 println!("{:?}", function_symbol);
-        //             } else {
-        //                 return Err(format!("Unknown function '{}'", callee));
-        //             };
-        //         }
-        //         _ => return Err(format!("Unknown expression.")),
-        //     },
-        //     _ => return Err(format!("Unknown statement.")),
-        // }
         Ok(())
     }
 
     fn analyze_expression(&self, expression: &Expression) -> Result<(), String> {
-        println!("{:?}", expression);
-
         match expression {
             Expression::Call { callee, arguments } => {
                 let original_function = self.resolver.resolve(callee)?;

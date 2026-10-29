@@ -1,6 +1,9 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
-use crate::semantic::symbols::FunctionSymbol;
+use crate::{
+    codegen::{linker::compile_to_executable, llvm::generate_code},
+    semantic::symbols::FunctionSymbol,
+};
 
 fn prepare_symbols(
     program: &super::ast::structs::Program,
@@ -28,7 +31,6 @@ pub fn compile(source_file: &Path) -> Result<(), String> {
 
     let content = std::fs::read_to_string(source_file).expect("[CRITICAL] Failed to open a file");
 
-    // TODO: lexer -> parser -> ast -> codegen
     let mut lexer = super::lexer::Lexer::new(content.as_str());
     let tokens = lexer.tokenize()?;
 
@@ -39,7 +41,11 @@ pub fn compile(source_file: &Path) -> Result<(), String> {
     let mut semantic_analyzer = super::semantic::SemanticAnalyzer::new(program, symbol_table);
     semantic_analyzer.analyze()?;
 
-    println!("Source loaded: {} characters", content.len());
+    let save_ll_file_path = Path::new("/tmp/hello.ll");
+    let output_file_path = Path::new("a.out");
+
+    generate_code(save_ll_file_path)?;
+    compile_to_executable(save_ll_file_path, output_file_path)?;
 
     Ok(())
 }
