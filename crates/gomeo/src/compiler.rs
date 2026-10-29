@@ -1,5 +1,26 @@
 use std::path::Path;
 
+use crate::semantic::symbols::FunctionSymbol;
+
+fn prepare_symbols(
+    program: &super::ast::structs::Program,
+) -> Result<super::semantic::symbols::SymbolTable, String> {
+    let mut symbol_table = super::semantic::symbols::create_core_symbols()?;
+
+    for function in &program.functions {
+        symbol_table.insert(
+            function.name.clone(),
+            FunctionSymbol {
+                name: function.name.clone(),
+                return_type: function.return_type.clone(),
+                arguments: vec![],
+            },
+        )?;
+    }
+
+    Ok(symbol_table)
+}
+
 pub fn compile(source_file: &Path) -> Result<(), String> {
     if std::fs::metadata(source_file).is_err() {
         return Err(format!("File '{}' doesn't exist", source_file.display()));
@@ -12,7 +33,11 @@ pub fn compile(source_file: &Path) -> Result<(), String> {
     let tokens = lexer.tokenize()?;
 
     let mut parser = super::parser::Parser::new(tokens);
-    let _program = parser.parse()?;
+    let program = parser.parse()?;
+    let symbol_table = prepare_symbols(&program)?;
+
+    let mut semantic_analyzer = super::semantic::SemanticAnalyzer::new(program, symbol_table);
+    semantic_analyzer.analyze()?;
 
     println!("Source loaded: {} characters", content.len());
 

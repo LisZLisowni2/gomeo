@@ -7,7 +7,7 @@ class Person {
     }
 }
 
-fun main() {
+fun main() -> void {
     let person = new Person("Tom");
 
     if (person->phone != NULL) {

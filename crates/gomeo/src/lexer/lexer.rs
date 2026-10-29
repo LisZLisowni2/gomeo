@@ -64,6 +64,19 @@ impl Lexer {
 
             '"' => return self.string(),
 
+            '-' => {
+                let second_c = self.advance();
+                if second_c == '>' {
+                    TokenKind::ReturnArrow
+                } else {
+                    let new_string = format!("{}{}", c, second_c);
+                    return Err(format!(
+                        "Unexpected string '{}', line: {}, column: {}",
+                        new_string, self.line, self.start_column
+                    ));
+                }
+            }
+
             c if c.is_ascii_digit() => {
                 while self.peek().is_some_and(|c| c.is_ascii_digit()) {
                     self.advance();

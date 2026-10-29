@@ -14,11 +14,11 @@ class Cat <- Animal {
     }
 }
 
-fun animalMakeNoice(animal: virtual Animal) {
+fun animalMakeNoice(animal: virtual Animal) -> void {
     animal->makeNoice();
 }
 
-fun main() {
+fun main() -> void {
     let dog: Dog;
     let cat: Cat;
 

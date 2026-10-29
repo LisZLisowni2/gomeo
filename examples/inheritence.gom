@@ -9,7 +9,7 @@ class Dog {
         this->message = m;
     }
 
-    exclude public fun Bark() {
+    exclude public fun Bark() -> void {
         println("Hau!");
     }
 }
@@ -21,12 +21,12 @@ class Cat <- Dog {
         this->message = m;
     }
 
-    exclude public fun Meow() {
+    exclude public fun Meow() -> void {
         println("Meow!");
     }
 }
 
-fun main() {
+fun main() -> void {
     let shepard: Dog = Dog("Shepard", "Albert", "This is a nice dog");
     let phoenix: Cat = Cat("Phoenix", "John", "This is a nice cat");
 

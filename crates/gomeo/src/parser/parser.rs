@@ -1,5 +1,6 @@
 use crate::ast::structs::{Block, Expression, FunctionalDecl, Program, Statement};
 use crate::lexer::token::{Token, TokenKind};
+use crate::types::Type;
 
 pub struct Parser {
     pub tokens: Vec<Token>,
@@ -30,10 +31,32 @@ impl Parser {
 
         self.consume(&TokenKind::LeftParen, "Expected '('")?;
         self.consume(&TokenKind::RightParen, "Expected ')'")?;
+        self.consume(&TokenKind::ReturnArrow, "Expected '->'")?;
 
+        let return_type = self.parse_type()?;
         let body = self.parse_body()?;
 
-        Ok(FunctionalDecl { name, body })
+        Ok(FunctionalDecl {
+            name,
+            return_type,
+            body,
+        })
+    }
+
+    fn parse_type(&mut self) -> Result<Type, String> {
+        let token = self.peek().clone();
+
+        self.consume(&TokenKind::Identifier, "Expected return type")?;
+
+        match token.lexeme.as_str() {
+            "void" => Ok(Type::Void),
+            "i32" => Ok(Type::Integer32),
+            "string" => Ok(Type::String),
+            _ => Err(format!(
+                "Unknown return type '{}', line: {}, column: {}",
+                token.lexeme, token.line, token.column
+            )),
+        }
     }
 
     fn parse_body(&mut self) -> Result<Block, String> {

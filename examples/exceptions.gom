@@ -14,7 +14,7 @@ fun division(a: i32, b: i32) -> i32 {
     return a / b;
 }
 
-fun main() {
+fun main() -> void {
     try {
         let a: i32 = 4;
         let b: i32 = 0;

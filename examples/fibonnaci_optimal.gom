@@ -16,7 +16,7 @@ fun fibonacci(n: i32) -> i32 {
 	return a;
 }
 
-fun main() {
+fun main() -> void {
 	let x: i32 = 10;
 	println(@"Fibonacci for {x}: {fibonacci(x)}"); 
 }

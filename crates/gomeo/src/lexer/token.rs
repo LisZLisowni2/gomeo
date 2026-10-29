@@ -20,6 +20,8 @@ pub enum TokenKind {
     Equal,
     Comma,
 
+    ReturnArrow,
+
     // End of file
     Eof,
 }

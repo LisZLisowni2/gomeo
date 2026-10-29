@@ -6,15 +6,15 @@ class Dog {
     }
 }
 
-fun printDog(dog: &Dog) {
+fun printDog(dog: &Dog) -> void {
     println(dog->name);
 }
 
-fun takeDog(take dog: Dog) {
+fun takeDog(take dog: Dog) -> void {
     println(dog->name);
 }
 
-fun main() {
+fun main() -> void {
     let dog: Dog = new Dog("Rex");
     
     printDog(dog);

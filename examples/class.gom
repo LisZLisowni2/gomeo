@@ -14,7 +14,7 @@ class Dog {
     }
 }
 
-fun main() {
+fun main() -> void {
     let shepard: Dog = new Dog("Shepard", "Albert", "This is a nice dog");
 
     shepard->Bark();
