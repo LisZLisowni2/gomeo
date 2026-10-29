@@ -17,9 +17,11 @@ pub struct FunctionalDecl {
     pub body: Block,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Expression {
     StringLiteral(String),
+    Integer32Literal(String),
+    VoidLiteral(),
     Call {
         callee: String,
         arguments: Vec<Expression>,
