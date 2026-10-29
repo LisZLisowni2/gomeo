@@ -1,6 +1,5 @@
-use crate::ast::structs::{
-    Block, Expression, FunctionArgument, FunctionalDecl, Program, Statement,
-};
+use crate::argument::FunctionArgument;
+use crate::ast::structs::{Block, Expression, FunctionalDecl, Program, Statement};
 use crate::lexer::token::{Token, TokenKind};
 use crate::types::Type;
 
@@ -137,8 +136,8 @@ impl Parser {
             if self.check_next(&TokenKind::LeftParen) {
                 return self.parse_call();
             } else {
-                self.advance();
-                let variable_name = &self.peek().lexeme;
+                let token = self.advance();
+                let variable_name = &token.lexeme;
                 return Ok(Expression::VariableLiteral(variable_name.to_string()));
             }
         }

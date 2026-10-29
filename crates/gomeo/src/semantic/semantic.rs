@@ -1,23 +1,23 @@
+use super::name_resolver::NameResolver;
 use super::symbols;
-use crate::{
-    ast::structs::{
-        Expression, FunctionalDecl, Program,
-        Statement::{self},
-    },
-    semantic::symbols::FunctionSymbol,
+use crate::ast::structs::{
+    Expression, FunctionalDecl, Program,
+    Statement::{self},
 };
 
 pub struct SemanticAnalyzer {
     program: Program,
-    symbol_table: symbols::SymbolTable,
+    resolver: NameResolver,
     current: usize,
 }
 
 impl SemanticAnalyzer {
     pub fn new(program: Program, symbol_table: symbols::SymbolTable) -> Self {
+        let resolver = NameResolver::new(symbol_table);
+
         Self {
             program,
-            symbol_table,
+            resolver,
             current: 0,
         }
     }
@@ -34,13 +34,7 @@ impl SemanticAnalyzer {
     fn analyze_function(&self) -> Result<(), String> {
         let function = self.peek();
 
-        if self.search_in_symbols(&function.name).is_none() {
-            return Err(format!(
-                "Function with name '{}' doesn't exist in provided namespaces.",
-                function.name
-            ));
-        }
-
+        self.resolver.resolve(&function.name)?;
         self.analyze_body()?;
 
         Ok(())
@@ -58,23 +52,48 @@ impl SemanticAnalyzer {
     }
 
     fn analyze_statement(&self, statement: &Statement) -> Result<(), String> {
+        println!("{:?}", statement);
+
         match statement {
-            Statement::Expression(expression) => match expression {
-                Expression::Call { callee, arguments } => {
-                    if let Some(function_symbol) = self.search_in_symbols(callee) {
-                    } else {
-                        return Err(format!("Unknown function '{}'", callee));
-                    };
-                }
-                _ => return Err(format!("Unknown expression.")),
-            },
-            _ => return Err(format!("Unknown statement.")),
+            Statement::Expression(expression) => self.analyze_expression(expression)?,
         }
+        // match statement {
+        //     Statement::Expression(expression) => match expression {
+        //         Expression::Call { callee, arguments } => {
+        //             if let Ok(function_symbol) = self.resolver.resolve(callee) {
+        //                 println!("{:?}", function_symbol);
+        //             } else {
+        //                 return Err(format!("Unknown function '{}'", callee));
+        //             };
+        //         }
+        //         _ => return Err(format!("Unknown expression.")),
+        //     },
+        //     _ => return Err(format!("Unknown statement.")),
+        // }
         Ok(())
     }
 
-    fn search_in_symbols(&self, name: &str) -> Option<&FunctionSymbol> {
-        self.symbol_table.search(name)
+    fn analyze_expression(&self, expression: &Expression) -> Result<(), String> {
+        println!("{:?}", expression);
+
+        match expression {
+            Expression::Call { callee, arguments } => {
+                let original_function = self.resolver.resolve(callee)?;
+
+                if original_function.arguments.len() != arguments.len() {
+                    return Err(format!(
+                        "Expected {} arguments, received {}",
+                        original_function.arguments.len(),
+                        arguments.len()
+                    ));
+                }
+            }
+            _ => {
+                return Err("Unknown expression".to_string());
+            }
+        }
+
+        Ok(())
     }
 
     fn is_at_end(&self) -> bool {

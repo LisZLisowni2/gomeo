@@ -1,9 +1,6 @@
 use std::path::Path;
 
-use crate::{
-    ast::structs::{Expression, FunctionArgument, Statement},
-    semantic::symbols::FunctionSymbol,
-};
+use crate::semantic::symbols::FunctionSymbol;
 
 fn prepare_symbols(
     program: &super::ast::structs::Program,

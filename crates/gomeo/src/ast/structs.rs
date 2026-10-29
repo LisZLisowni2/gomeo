@@ -16,15 +16,9 @@ pub struct Block {
 #[derive(Debug)]
 pub struct FunctionalDecl {
     pub name: String,
-    pub arguments: Vec<FunctionArgument>,
+    pub arguments: Vec<crate::argument::FunctionArgument>,
     pub return_type: crate::types::Type,
     pub body: Block,
-}
-
-#[derive(Clone, Debug)]
-pub struct FunctionArgument {
-    pub name: String,
-    pub arg_type: crate::types::Type,
 }
 
 #[derive(Debug, Clone)]

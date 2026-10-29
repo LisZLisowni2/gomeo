@@ -1,4 +1,4 @@
-use crate::ast::structs::FunctionArgument;
+use crate::argument::FunctionArgument;
 use crate::types::Type;
 use std::collections::HashMap;
 
