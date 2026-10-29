@@ -1,4 +1,6 @@
-use crate::ast::structs::{Block, Expression, FunctionalDecl, Program, Statement};
+use crate::ast::structs::{
+    Block, Expression, FunctionArgument, FunctionalDecl, Program, Statement,
+};
 use crate::lexer::token::{Token, TokenKind};
 use crate::types::Type;
 
@@ -30,6 +32,9 @@ impl Parser {
             .lexeme;
 
         self.consume(&TokenKind::LeftParen, "Expected '('")?;
+
+        let arguments = self.parse_arguments()?;
+
         self.consume(&TokenKind::RightParen, "Expected ')'")?;
         self.consume(&TokenKind::ReturnArrow, "Expected '->'")?;
 
@@ -40,7 +45,35 @@ impl Parser {
             name,
             return_type,
             body,
+            arguments,
         })
+    }
+
+    fn parse_arguments(&mut self) -> Result<Vec<FunctionArgument>, String> {
+        let mut args: Vec<FunctionArgument> = Vec::new();
+
+        while !self.check(&TokenKind::RightParen) {
+            let name = self
+                .consume(&TokenKind::Identifier, "Expected argument name")?
+                .lexeme;
+            self.consume(&TokenKind::Colon, "Expected ':' after argument name")?;
+            let arg_type = self
+                .consume(&TokenKind::Identifier, "Expected argument type")?
+                .lexeme;
+
+            let final_type = match arg_type.as_str() {
+                "i32" => Type::Integer32,
+                "string" => Type::String,
+                _ => return Err("Unknown argument type".to_string()),
+            };
+
+            args.push(FunctionArgument {
+                name,
+                arg_type: final_type,
+            });
+        }
+
+        Ok(args)
     }
 
     fn parse_type(&mut self) -> Result<Type, String> {
@@ -101,7 +134,13 @@ impl Parser {
         }
 
         if self.check(&TokenKind::Identifier) {
-            return self.parse_call();
+            if self.check_next(&TokenKind::LeftParen) {
+                return self.parse_call();
+            } else {
+                self.advance();
+                let variable_name = &self.peek().lexeme;
+                return Ok(Expression::VariableLiteral(variable_name.to_string()));
+            }
         }
 
         let token = self.peek();
@@ -151,8 +190,24 @@ impl Parser {
         self.peek().kind == *kind
     }
 
+    fn check_next(&self, kind: &TokenKind) -> bool {
+        if let Some(token) = self.next_token() {
+            return token.kind == *kind;
+        } else {
+            return false;
+        }
+    }
+
     fn peek(&self) -> &Token {
         &self.tokens[self.current]
+    }
+
+    fn next_token(&self) -> Option<&Token> {
+        if self.current < self.tokens.len() - 1 {
+            Some(&self.tokens[self.current + 1])
+        } else {
+            None
+        }
     }
 
     fn consume(&mut self, kind: &TokenKind, message: &str) -> Result<Token, String> {

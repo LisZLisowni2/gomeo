@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use crate::{
-    ast::structs::{Expression, Statement},
-    semantic::symbols::{FunctionArgument, FunctionSymbol},
+    ast::structs::{Expression, FunctionArgument, Statement},
+    semantic::symbols::FunctionSymbol,
 };
 
 fn prepare_symbols(
@@ -11,45 +11,12 @@ fn prepare_symbols(
     let mut symbol_table = super::semantic::symbols::create_core_symbols()?;
 
     for function in &program.functions {
-        let mut function_arguments = vec![];
-
-        for statement in &function.body.statements {
-            match statement {
-                Statement::Expression(expression) => match expression {
-                    Expression::Call {
-                        callee: _callee,
-                        arguments,
-                    } => {
-                        for argument in arguments {
-                            match argument {
-                                Expression::StringLiteral(name) => {
-                                    function_arguments.push(FunctionArgument {
-                                        name: name.to_string(),
-                                        arg_type: crate::types::Type::String,
-                                    })
-                                }
-                                Expression::Integer32Literal(name) => {
-                                    function_arguments.push(FunctionArgument {
-                                        name: name.to_string(),
-                                        arg_type: crate::types::Type::Integer32,
-                                    })
-                                }
-                                _ => return Err("Unknown argument.".to_string()),
-                            }
-                        }
-                    }
-                    _ => return Err("Unknown expression".to_string()),
-                },
-                _ => return Err("Unknown statement.".to_string()),
-            }
-        }
-
         symbol_table.insert(
             function.name.clone(),
             FunctionSymbol {
                 name: function.name.clone(),
                 return_type: function.return_type.clone(),
-                arguments: function_arguments,
+                arguments: function.arguments.clone(),
             },
         )?;
     }

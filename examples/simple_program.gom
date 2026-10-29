@@ -1,0 +1,7 @@
+fun display(text: string) -> void {
+    println(text);
+}
+
+fun main() -> void {
+    display("Hello world");
+}

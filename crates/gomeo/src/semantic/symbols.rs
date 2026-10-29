@@ -1,15 +1,12 @@
+use crate::ast::structs::FunctionArgument;
 use crate::types::Type;
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct FunctionSymbol {
     pub name: String,
     pub return_type: Type,
     pub arguments: Vec<FunctionArgument>,
-}
-
-pub struct FunctionArgument {
-    pub name: String,
-    pub arg_type: Type,
 }
 
 pub fn create_core_symbols() -> Result<SymbolTable, String> {
@@ -30,6 +27,7 @@ pub fn create_core_symbols() -> Result<SymbolTable, String> {
     Ok(symbol_table)
 }
 
+#[derive(Debug)]
 pub struct SymbolTable {
     symbols: HashMap<String, FunctionSymbol>,
 }
