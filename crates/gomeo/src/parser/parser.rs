@@ -1,5 +1,5 @@
 use crate::argument::FunctionArgument;
-use crate::ast::structs::{Block, Expression, FunctionalDecl, Program, Statement};
+use crate::ast::structs::{Block, Expression, FunctionBody, FunctionalDecl, Program, Statement};
 use crate::lexer::token::{Token, TokenKind};
 use crate::types::Type;
 
@@ -24,6 +24,11 @@ impl Parser {
     }
 
     fn parse_function(&mut self) -> Result<FunctionalDecl, String> {
+        let mut is_extern: bool = false;
+        if self.check(&TokenKind::Extern) {
+            is_extern = true;
+            self.consume(&TokenKind::Extern, "Expected 'extern'")?;
+        }
         self.consume(&TokenKind::Fun, "Expected 'fun'")?;
 
         let name = self
@@ -38,7 +43,7 @@ impl Parser {
         self.consume(&TokenKind::ReturnArrow, "Expected '->'")?;
 
         let return_type = self.parse_type()?;
-        let body = self.parse_body()?;
+        let body = self.parse_body(is_extern)?;
 
         Ok(FunctionalDecl {
             name,
@@ -91,18 +96,23 @@ impl Parser {
         }
     }
 
-    fn parse_body(&mut self) -> Result<Block, String> {
-        self.consume(&TokenKind::LeftBrace, "Expected '{'")?;
+    fn parse_body(&mut self, is_extern: bool) -> Result<FunctionBody, String> {
+        if is_extern {
+            self.consume(&TokenKind::Semicolon, "Expected ';'")?;
+            Ok(FunctionBody::External)
+        } else {
+            self.consume(&TokenKind::LeftBrace, "Expected '{'")?;
 
-        let mut statements = Vec::new();
+            let mut statements = Vec::new();
 
-        while !self.check(&TokenKind::RightBrace) && !self.check(&TokenKind::Eof) {
-            statements.push(self.parse_statement()?);
+            while !self.check(&TokenKind::RightBrace) && !self.check(&TokenKind::Eof) {
+                statements.push(self.parse_statement()?);
+            }
+
+            self.consume(&TokenKind::RightBrace, "Expected '}'")?;
+
+            Ok(FunctionBody::Defined(Block { statements }))
         }
-
-        self.consume(&TokenKind::RightBrace, "Expected '}'")?;
-
-        Ok(Block { statements })
     }
 
     fn parse_statement(&mut self) -> Result<Statement, String> {
@@ -191,9 +201,9 @@ impl Parser {
 
     fn check_next(&self, kind: &TokenKind) -> bool {
         if let Some(token) = self.next_token() {
-            return token.kind == *kind;
+            token.kind == *kind
         } else {
-            return false;
+            false
         }
     }
 

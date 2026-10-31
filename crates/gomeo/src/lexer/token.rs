@@ -4,6 +4,7 @@ pub enum TokenKind {
     Fun,
     Let,
     Mut,
+    Extern,
 
     // Identifiers and literals
     Identifier,

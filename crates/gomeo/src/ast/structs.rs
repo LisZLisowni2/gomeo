@@ -14,11 +14,17 @@ pub struct Block {
 }
 
 #[derive(Debug)]
+pub enum FunctionBody {
+    Defined(Block),
+    External,
+}
+
+#[derive(Debug)]
 pub struct FunctionalDecl {
     pub name: String,
     pub arguments: Vec<crate::argument::FunctionArgument>,
     pub return_type: crate::types::Type,
-    pub body: Block,
+    pub body: FunctionBody,
 }
 
 #[derive(Debug, Clone)]

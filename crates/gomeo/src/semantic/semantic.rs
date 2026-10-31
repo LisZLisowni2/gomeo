@@ -1,8 +1,10 @@
 use super::name_resolver::NameResolver;
-use super::symbols;
-use crate::ast::structs::{
-    Expression, FunctionalDecl, Program,
-    Statement::{self},
+use crate::{
+    ast::structs::{
+        Expression, FunctionBody, FunctionalDecl, Program,
+        Statement::{self},
+    },
+    semantic::collector::SymbolCollector,
 };
 
 pub struct SemanticAnalyzer {
@@ -12,14 +14,19 @@ pub struct SemanticAnalyzer {
 }
 
 impl SemanticAnalyzer {
-    pub fn new(program: Program, symbol_table: symbols::SymbolTable) -> Self {
+    pub fn new(program: Program) -> Result<Self, String> {
+        let mut collector = SymbolCollector::new(&program);
+
+        collector.collect()?;
+        let symbol_table = collector.into_symbol_table();
+
         let resolver = NameResolver::new(symbol_table);
 
-        Self {
+        Ok(Self {
             program,
             resolver,
             current: 0,
-        }
+        })
     }
 
     pub fn analyze(&mut self) -> Result<(), String> {
@@ -42,11 +49,16 @@ impl SemanticAnalyzer {
 
     fn analyze_body(&self) -> Result<(), String> {
         let function = self.peek();
-        let body = &function.body;
+        let fun_body = &function.body;
 
-        for statement in &body.statements {
-            self.analyze_statement(statement)?;
-        }
+        match fun_body {
+            FunctionBody::Defined(block) => {
+                for statement in &block.statements {
+                    self.analyze_statement(statement)?;
+                }
+            }
+            FunctionBody::External => {}
+        };
 
         Ok(())
     }
@@ -90,4 +102,11 @@ impl SemanticAnalyzer {
     fn advance(&mut self) {
         self.current += 1
     }
+}
+
+// TODO: Support forward function references.
+#[cfg(test)]
+mod tests {
+    // TODO: Unittest - call function defined after main
+    //
 }

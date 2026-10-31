@@ -2,10 +2,11 @@ use crate::argument::FunctionArgument;
 use crate::types::Type;
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum FunctionOrigin {
     Builtin,
     UserDefined,
+    External,
 }
 
 #[derive(Debug)]

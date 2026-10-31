@@ -1,0 +1,5 @@
+extern fun println(text: string) -> void;
+
+fun main() -> void {
+    println("Hello world");
+}

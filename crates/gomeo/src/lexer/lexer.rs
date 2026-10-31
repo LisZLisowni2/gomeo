@@ -96,6 +96,7 @@ impl Lexer {
                     "fun" => TokenKind::Fun,
                     "mut" => TokenKind::Mut,
                     "let" => TokenKind::Let,
+                    "extern" => TokenKind::Extern,
                     _ => TokenKind::Identifier,
                 }
             }
