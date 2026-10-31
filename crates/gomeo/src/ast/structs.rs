@@ -24,9 +24,8 @@ pub struct FunctionalDecl {
 #[derive(Debug, Clone)]
 pub enum Expression {
     StringLiteral(String),
-    Integer32Literal(String),
-    VoidLiteral(),
-    VariableLiteral(String),
+    Integer32Literal(i32),
+    Variable(String),
     Call {
         callee: String,
         arguments: Vec<Expression>,

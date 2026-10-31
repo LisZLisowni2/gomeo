@@ -138,7 +138,7 @@ impl Parser {
             } else {
                 let token = self.advance();
                 let variable_name = &token.lexeme;
-                return Ok(Expression::VariableLiteral(variable_name.to_string()));
+                return Ok(Expression::Variable(variable_name.to_string()));
             }
         }
 

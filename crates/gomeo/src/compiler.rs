@@ -1,8 +1,8 @@
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use crate::{
     codegen::{linker::compile_to_executable, llvm::generate_code},
-    semantic::symbols::FunctionSymbol,
+    semantic::symbols::{FunctionOrigin, FunctionSymbol},
 };
 
 fn prepare_symbols(
@@ -17,6 +17,7 @@ fn prepare_symbols(
                 name: function.name.clone(),
                 return_type: function.return_type.clone(),
                 arguments: function.arguments.clone(),
+                origin: FunctionOrigin::UserDefined,
             },
         )?;
     }

@@ -3,10 +3,17 @@ use crate::types::Type;
 use std::collections::HashMap;
 
 #[derive(Debug)]
+pub enum FunctionOrigin {
+    Builtin,
+    UserDefined,
+}
+
+#[derive(Debug)]
 pub struct FunctionSymbol {
     pub name: String,
     pub return_type: Type,
     pub arguments: Vec<FunctionArgument>,
+    pub origin: FunctionOrigin,
 }
 
 pub fn create_core_symbols() -> Result<SymbolTable, String> {
@@ -21,6 +28,7 @@ pub fn create_core_symbols() -> Result<SymbolTable, String> {
                 name: String::from("text"),
                 arg_type: Type::String,
             }],
+            origin: FunctionOrigin::Builtin,
         },
     )?;
 
@@ -49,5 +57,9 @@ impl SymbolTable {
 
     pub fn search(&self, name: &str) -> Option<&FunctionSymbol> {
         self.symbols.get(name)
+    }
+
+    pub fn all_symbols(&self) -> &HashMap<String, FunctionSymbol> {
+        &self.symbols
     }
 }
