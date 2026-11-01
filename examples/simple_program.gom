@@ -1,3 +1,5 @@
+extern fun println(text: string) -> void;
+
 fun display(text: string) -> void {
     println(text);
 }

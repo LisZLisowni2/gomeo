@@ -1,11 +1,11 @@
 use crate::semantic::symbols::{FunctionSymbol, SymbolTable};
 
-pub struct NameResolver {
-    symbol_table: SymbolTable,
+pub struct NameResolver<'a> {
+    symbol_table: &'a SymbolTable,
 }
 
-impl NameResolver {
-    pub fn new(symbol_table: SymbolTable) -> Self {
+impl<'a> NameResolver<'a> {
+    pub fn new(symbol_table: &'a SymbolTable) -> Self {
         Self { symbol_table }
     }
 

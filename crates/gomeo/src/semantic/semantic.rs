@@ -4,22 +4,17 @@ use crate::{
         Expression, FunctionBody, FunctionalDecl, Program,
         Statement::{self},
     },
-    semantic::collector::SymbolCollector,
+    semantic::{collector::SymbolCollector, symbols::SymbolTable},
 };
 
-pub struct SemanticAnalyzer {
-    program: Program,
-    resolver: NameResolver,
+pub struct SemanticAnalyzer<'a> {
+    program: &'a Program,
+    resolver: NameResolver<'a>,
     current: usize,
 }
 
-impl SemanticAnalyzer {
-    pub fn new(program: Program) -> Result<Self, String> {
-        let mut collector = SymbolCollector::new(&program);
-
-        collector.collect()?;
-        let symbol_table = collector.into_symbol_table();
-
+impl<'a> SemanticAnalyzer<'a> {
+    pub fn new(program: &'a Program, symbol_table: &'a SymbolTable) -> Result<Self, String> {
         let resolver = NameResolver::new(symbol_table);
 
         Ok(Self {
