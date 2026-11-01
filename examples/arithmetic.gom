@@ -1,0 +1,27 @@
+fun addition(a: i32, b: i32) -> i32 {
+    return a + b;
+}
+
+fun subtraction(a: i32, b: i32) -> i32 {
+    return a - b;
+}
+
+fun multiplication(a: i32, b: i32) -> i32 {
+    return a * b;
+}
+
+fun division(a: i32, b: i32) -> i32 {
+    return a / b;
+}
+
+fun main() -> void {
+    let result1 = addition(3, 5);
+    let result2 = subtraction(8, 4);
+    let result3 = multiplication(10, 2);
+    let result4 = division(100, 25);
+
+    println(@"3 + 5 = {result1}");
+    println(@"8 - 4 = {result2}");
+    println(@"10 * 2 = {result3}");
+    println(@"100 / 25 = {result4}");
+}
